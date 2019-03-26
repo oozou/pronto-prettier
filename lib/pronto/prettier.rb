@@ -3,7 +3,6 @@ require "pronto/prettier/version"
 
 module Pronto
   class Prettier < Runner
-    VERSION = "0.1.0"
     EXTNAMES = %w[.jsx .js].freeze
 
     def run
@@ -23,12 +22,13 @@ module Pronto
     end
 
     def run_prettier_check!
-      msg = `prettier --check #{javascript_files.join(' ')}`
+      `prettier --check #{javascript_files.join(' ')}`
 
       if $CHILD_STATUS.success?
         []
       else
-        [Message.new(nil, nil, :warning, msg, nil, self.class)]
+        msg = 'Code style issues found in the file. Forgot to run `yarn format`?'
+        javascript_files.map { |js| Message.new(js, nil, :warning, msg, nil, self.class) }
       end
     end
   end
