@@ -28,7 +28,7 @@ module Pronto
       if $CHILD_STATUS.success?
         []
       else
-        [Message.new(nil, nil, :error, msg, nil, self.class)]
+        [Message.new(nil, nil, :warning, msg, nil, self.class)]
       end
     end
   end
