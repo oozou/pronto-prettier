@@ -17,6 +17,7 @@ module Pronto
 
     def javascript_files
        @patches
+        .select { |patch| patch.additions > 0 }
         .map(&:new_file_full_path)
         .select { |file| EXTNAMES.include?(File.extname(file))  }
     end
@@ -28,7 +29,7 @@ module Pronto
         []
       else
         msg = 'Code style issues found in the file. Forgot to run `yarn format`?'
-        javascript_files.map { |js| Message.new(js, nil, :warning, msg, nil, self.class) }
+        javascript_files.map { |js| Message.new(js, nil, :fatal, msg, nil, self.class) }
       end
     end
   end
